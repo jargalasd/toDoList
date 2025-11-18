@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        li{
+            background-color: rgb(179, 252, 228);
+            padding: 10px;
+            border-radius: 10px;
+            transition: 0.5s;
+        }
+        .liAdd{
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+<body>
+    <div id="divAdjacement" style="background-color: rgb(237, 249, 214); width: 500px; height: 400px;">
+        <input id="inputText" type="text" style="width: 250px; height: 50px; text-align: center;" placeholder="Төлөвлөгөөгөө бичиж оруулна уу">
+        <ul id="todo">
+
+        </ul>
+        <button id="addBtn">Нэмэх</button>
+        <button id="ustgah">x</button>
+    </div>
+    <script>
+        let listTag=document.getElementById("todo");
+        let btn=document.getElementById("addBtn");
+        let inTxt=document.getElementById("inputText");
+        let btn_ustgah=document.getElementById("ustgah");
+        let todos=JSON.parse(localStorage.getItem("todos"))||[];
+        todos.forEach(element => {
+            let li=`<li>${element}</li>`;
+            listTag.insertAdjacentHTML("beforeend",li);
+        });
+        btn.addEventListener("click", ()=>{
+            let inpValue=inTxt.value.trim();
+            if(inpValue){
+            let nemeh=`<li class="liAdd">${inpValue} - ${new Date().toLocaleDateString()}</li>`;
+            listTag.insertAdjacentHTML("beforeend",nemeh);
+            setTimeout(()=>{
+                listTag.lastElementChild.classList.remove("liAdd");
+            },1000)
+        
+        todos.push(inpValue +" - " + new Date().toLocaleDateString());
+        localStorage.setItem("todos",JSON.stringify(todos))
+        inTxt.value="";
+        }
+        });
+        btn_ustgah.addEventListener("click", ()=>{
+            alert("Тэмдэглэсэн жагсаалт устахыг анхаарна уу!!!")
+            localStorage.removeItem("todos");
+            location.reload();
+        })
+        inTxt.addEventListener("keydown", (e)=>{
+            e.key="Enter"
+        })
+    </script>
+</body>
+</html>
